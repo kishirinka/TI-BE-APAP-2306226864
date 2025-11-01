@@ -40,7 +40,17 @@ const router = createRouter({
     {
       path: '/policies',
       name: 'policies',
-      component: () => import('../views/PoliciesView.vue'),
+      component: () => import('../views/policy/PolicyView.vue'),
+    },
+    {
+      path: '/policies/create',
+      name: 'policy-create',
+      component: () => import('../views/policy/CreatePolicyView.vue'),
+    },
+    {
+      path: '/policies/:id',
+      name: 'policy-detail',
+      component: () => import('../views/policy/DetailPolicyView.vue'),
     },
     {
       path: '/claims', 
