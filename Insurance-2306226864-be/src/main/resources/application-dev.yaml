@@ -1,0 +1,17 @@
+spring:
+    config:
+        import: optional:file:.env[.properties]
+    datasource:
+        url: ${DATABASE_URL_DEV}
+        username: ${DEV_USERNAME}
+        password: ${DEV_PASSWORD}
+        driver-class-name: org.h2.Driver
+    h2:
+        console:
+            enabled: true
+            path: /h2-console
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: true
