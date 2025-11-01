@@ -30,7 +30,7 @@ public class InsurancePlanServiceImpl implements InsurancePlanService {
     // ========================== GET ALL ==========================
     @Override
     public List<InsurancePlanResponseDTO> getAllInsurancePlans(PageRequest pageRequest) {
-        return insurancePlanRepository.findAll(pageRequest)
+        return insurancePlanRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(InsurancePlanResponseDTO::fromEntity)
                 .collect(Collectors.toList());
