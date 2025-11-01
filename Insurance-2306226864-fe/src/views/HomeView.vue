@@ -1,36 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import StatsCard from '@/components/common/StatsCard.vue'
-import Vnavbar from '@/components/layout/Vnavbar.vue'
-import { apiService, type StatisticsData } from '@/services/apiService'
+import { computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStatisticsStore } from '@/stores/statistics.store';
+import VButton from '@/components/common/VButton.vue';
 
-// Reactive state
-const statistics = ref<StatisticsData>({
-  insurancePlans: 0,
-  insurancePolicies: 0,
-  processedClaims: 0
-})
-const loading = ref(true)
-const error = ref<string | null>(null)
+// Router
+const router = useRouter();
 
-// Fetch statistics on component mount
-const fetchStatistics = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    statistics.value = await apiService.getStatistics()
-  } catch (err) {
-    error.value = 'Failed to load statistics'
-    console.error('Error fetching statistics:', err)
-  } finally {
-    loading.value = false
-  }
-}
+// Store
+const statisticsStore = useStatisticsStore();
 
-onMounted(() => {
-  fetchStatistics()
-})
+// Computed
+const homeStats = computed(() => statisticsStore.homeStats);
+const loading = computed(() => statisticsStore.loading);
+const error = computed(() => statisticsStore.error);
+
+// Navigate to page
+const navigateTo = (path: string) => {
+  router.push(path);
+};
+
+// Lifecycle
+onMounted(async () => {
+  await statisticsStore.fetchHomeStatistics();
+});
 </script>
 
 <template>
