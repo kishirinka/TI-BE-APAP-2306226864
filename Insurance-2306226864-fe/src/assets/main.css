@@ -1,4 +1,0 @@
-@import "tailwindcss";
-@plugin "flowbite/plugin";
-@source "../../node_modules/flowbite";
-@import "vue-sonner/style.css"
