@@ -124,7 +124,7 @@ public class OrderedPlanResponseDTO {
             }
             
             ClaimSummaryDTO dto = new ClaimSummaryDTO();
-            dto.setId(claim.getId());
+            dto.setId(claim.getId());  // ID sudah dalam format: CLM{number}-OP{number}
             dto.setStatus(claim.getStatus());
             dto.setCreatedAt(claim.getCreatedAt());
             dto.setRejectionReason(claim.getRejectionReason());

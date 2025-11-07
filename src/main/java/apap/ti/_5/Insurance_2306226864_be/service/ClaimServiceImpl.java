@@ -99,7 +99,8 @@ public class ClaimServiceImpl implements ClaimService {
         }
 
         long count = claimRepository.count();
-        claim.setId("CLM" + (count + 1));
+        // Set ID dengan format: CLM{number}-{orderedPlanId}
+        claim.setId(orderedPlanId + "-CLAIM" + (count + 1));
         claim.setStatus(ClaimStatusEnum.WAITING_FOR_REVIEW);
         claim.setOrderedPlan(orderedPlan);
         claim.setCreatedAt(LocalDateTime.now());
@@ -138,6 +139,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public Claim rejectClaim(String id, String reason, String description) {
         Claim claim = getClaimById(id);
+        System.out.println("===============" + claim.getId());
 
         if (claim.getStatus() != ClaimStatusEnum.WAITING_FOR_REVIEW) {
             throw new RuntimeException("Cannot reject claim: Claim must be in WAITING_FOR_REVIEW status. Current status: " + claim.getStatus());
