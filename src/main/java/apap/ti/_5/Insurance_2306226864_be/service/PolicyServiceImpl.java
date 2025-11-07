@@ -1,5 +1,16 @@
 package apap.ti._5.Insurance_2306226864_be.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import apap.ti._5.Insurance_2306226864_be.enums.ClaimStatusEnum;
 import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
 import apap.ti._5.Insurance_2306226864_be.enums.PolicyStatusEnum;
@@ -9,17 +20,6 @@ import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
 import apap.ti._5.Insurance_2306226864_be.model.Policy;
 import apap.ti._5.Insurance_2306226864_be.repository.OrderedPlanRepository;
 import apap.ti._5.Insurance_2306226864_be.repository.PolicyRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -81,7 +81,7 @@ public class PolicyServiceImpl implements PolicyService {
 
             OrderedPlan orderedPlan = new OrderedPlan();
             long opCount = orderedPlanRepository.count();
-            orderedPlan.setId("OP" + (opCount + orderedPlans.size() + 1));
+            orderedPlan.setId(policy.getId() + "-OP" + (opCount + orderedPlans.size() + 1));
 
             orderedPlan.setPolicy(policy);
             orderedPlan.setInsurancePlan(insurancePlan);

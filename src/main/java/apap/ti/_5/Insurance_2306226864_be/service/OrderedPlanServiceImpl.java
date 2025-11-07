@@ -1,5 +1,12 @@
 package apap.ti._5.Insurance_2306226864_be.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import apap.ti._5.Insurance_2306226864_be.enums.ClaimStatusEnum;
 import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
 import apap.ti._5.Insurance_2306226864_be.enums.PolicyStatusEnum;
@@ -9,12 +16,6 @@ import apap.ti._5.Insurance_2306226864_be.model.Policy;
 import apap.ti._5.Insurance_2306226864_be.repository.ClaimRepository;
 import apap.ti._5.Insurance_2306226864_be.repository.OrderedPlanRepository;
 import apap.ti._5.Insurance_2306226864_be.repository.PolicyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Transactional
@@ -38,10 +39,10 @@ public class OrderedPlanServiceImpl implements OrderedPlanService {
 
     // ========================== CREATE ==========================
     @Override
-    public OrderedPlan createOrderedPlan(OrderedPlan orderedPlan) {
+    public OrderedPlan createOrderedPlan(String policyId, OrderedPlan orderedPlan) {
         // Generate ID: OP + (count + 1)
         long count = orderedPlanRepository.count();
-        orderedPlan.setId("OP" + (count + 1));
+        orderedPlan.setId(policyId + "-OP" + (count + 1));
 
         // Set timestamps
         orderedPlan.setCreatedAt(LocalDateTime.now());

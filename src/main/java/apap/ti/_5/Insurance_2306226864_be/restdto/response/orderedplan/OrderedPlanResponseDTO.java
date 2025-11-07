@@ -1,18 +1,18 @@
 package apap.ti._5.Insurance_2306226864_be.restdto.response.orderedplan;
 
-import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
-import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
-import apap.ti._5.Insurance_2306226864_be.restdto.response.claim.ClaimResponseDTO;
-import apap.ti._5.Insurance_2306226864_be.restdto.response.insuranceplan.InsurancePlanResponseDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
+import apap.ti._5.Insurance_2306226864_be.model.Claim;
+import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +26,8 @@ public class OrderedPlanResponseDTO {
     private List<ClaimSummaryDTO> claims;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private int claimsCount;
+    private long daysSinceClaimed;
     
     /**
      * Mapper from OrderedPlan entity to DTO
@@ -52,9 +54,18 @@ public class OrderedPlanResponseDTO {
             dto.setClaims(orderedPlan.getClaims().stream()
                     .map(ClaimSummaryDTO::fromEntity)
                     .collect(Collectors.toList()));
+            
+            LocalDateTime lastClaimDate = orderedPlan.getClaims().stream()
+                .map(Claim::getCreatedAt)
+                .max(LocalDateTime::compareTo)
+                .orElse(null);
+            dto.setDaysSinceClaimed(lastClaimDate != null ? ChronoUnit.DAYS.between(lastClaimDate, LocalDateTime.now()) : -1);
         } else {
             dto.setClaims(Collections.emptyList());
+            dto.setDaysSinceClaimed(-1);
         }
+        
+        dto.setClaimsCount(orderedPlan.getClaims() != null ? orderedPlan.getClaims().size() : 0);
         
         return dto;
     }
@@ -98,6 +109,15 @@ public class OrderedPlanResponseDTO {
         private apap.ti._5.Insurance_2306226864_be.enums.ClaimStatusEnum status;
         private LocalDateTime createdAt;
         
+        // Rejection fields
+        private String rejectionReason;
+        private String rejectionDescription;
+        private LocalDateTime rejectionTimestamp;
+        
+        // Acceptance fields
+        private String acceptedNote;
+        private LocalDateTime acceptedTimestamp;
+        
         public static ClaimSummaryDTO fromEntity(apap.ti._5.Insurance_2306226864_be.model.Claim claim) {
             if (claim == null) {
                 return null;
@@ -107,6 +127,11 @@ public class OrderedPlanResponseDTO {
             dto.setId(claim.getId());
             dto.setStatus(claim.getStatus());
             dto.setCreatedAt(claim.getCreatedAt());
+            dto.setRejectionReason(claim.getRejectionReason());
+            dto.setRejectionDescription(claim.getRejectionDescription());
+            dto.setRejectionTimestamp(claim.getRejectionTimestamp());
+            dto.setAcceptedNote(claim.getAcceptedNote());
+            dto.setAcceptedTimestamp(claim.getAcceptedTimestamp());
             return dto;
         }
     }
