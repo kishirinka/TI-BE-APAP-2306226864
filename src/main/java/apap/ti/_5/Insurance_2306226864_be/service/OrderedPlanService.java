@@ -6,7 +6,6 @@ import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
 
 public interface OrderedPlanService {
     OrderedPlan getOrderedPlanById(String id);
-    OrderedPlan createOrderedPlan(String policyId, OrderedPlan orderedPlan);
     OrderedPlan updateOrderedPlanStatus(String id, String status);
     List<OrderedPlan> getOrderedPlansByPolicyId(String policyId);
 }

@@ -17,6 +17,8 @@ public interface ClaimRepository extends JpaRepository<Claim, String> {
 
     // Find by status
     List<Claim> findByStatus(ClaimStatusEnum status);
+
+    long countByOrderedPlanId(String orderedPlanId);
     
     // Find by OrderedPlan
     List<Claim> findByOrderedPlanId(String orderedPlanId);

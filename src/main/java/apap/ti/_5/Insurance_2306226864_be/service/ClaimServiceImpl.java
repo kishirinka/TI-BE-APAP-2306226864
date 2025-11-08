@@ -89,16 +89,12 @@ public class ClaimServiceImpl implements ClaimService {
     public Claim createClaim(Claim claim, String orderedPlanId) {
         OrderedPlan orderedPlan = orderedPlanService.getOrderedPlanById(orderedPlanId);
 
-        if (orderedPlan.getStatus() != OrderedPlanStatusEnum.PAID) {
-            throw new RuntimeException("Cannot create claim: OrderedPlan must be PAID. Current status: " + orderedPlan.getStatus());
-        }
-
         LocalDate today = LocalDate.now();
         if (orderedPlan.getExpiredDate() != null && orderedPlan.getExpiredDate().isBefore(today)) {
             throw new RuntimeException("Cannot create claim: OrderedPlan has expired on " + orderedPlan.getExpiredDate());
         }
 
-        long count = claimRepository.count();
+        long count = claimRepository.countByOrderedPlanId(orderedPlanId);
         // Set ID dengan format: CLM{number}-{orderedPlanId}
         claim.setId(orderedPlanId + "-CLAIM" + (count + 1));
         claim.setStatus(ClaimStatusEnum.WAITING_FOR_REVIEW);

@@ -80,7 +80,7 @@ public class PolicyServiceImpl implements PolicyService {
             totalCoverage += insurancePlan.getCoverage();
 
             OrderedPlan orderedPlan = new OrderedPlan();
-            long opCount = orderedPlanRepository.count();
+            long opCount = orderedPlanRepository.countByPolicyId(policy.getId());
             orderedPlan.setId(policy.getId() + "-OP" + (opCount + orderedPlans.size() + 1));
 
             orderedPlan.setPolicy(policy);

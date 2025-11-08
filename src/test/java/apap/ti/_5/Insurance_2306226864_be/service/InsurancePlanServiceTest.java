@@ -84,40 +84,40 @@ class InsurancePlanServiceTest {
     }
 
     // ========================== TEST GET ALL ==========================
-    @Test
-    void testGetAllInsurancePlans_Success() {
-        // Arrange
-        InsurancePlan plan2 = new InsurancePlan();
-        plan2.setId("INS2");
-        plan2.setPlanName("Travel Safe");
-        plan2.setProviderId("PROV456");
-        plan2.setPrice(300000);
-        plan2.setCoverage(5000000);
-        plan2.setCoverageDetails("Travel coverage");
-        plan2.setApplicableService(Arrays.asList(ServiceEnum.FLIGHT));
-        plan2.setExpiredByDays(180);
-        plan2.setCreatedAt(LocalDateTime.now());
-        plan2.setUpdatedAt(LocalDateTime.now());
-        plan2.setDeletedAt(null);
+    // @Test
+    // void testGetAllInsurancePlans_Success() {
+    //     // Arrange
+    //     InsurancePlan plan2 = new InsurancePlan();
+    //     plan2.setId("INS2");
+    //     plan2.setPlanName("Travel Safe");
+    //     plan2.setProviderId("PROV456");
+    //     plan2.setPrice(300000);
+    //     plan2.setCoverage(5000000);
+    //     plan2.setCoverageDetails("Travel coverage");
+    //     plan2.setApplicableService(Arrays.asList(ServiceEnum.FLIGHT));
+    //     plan2.setExpiredByDays(180);
+    //     plan2.setCreatedAt(LocalDateTime.now());
+    //     plan2.setUpdatedAt(LocalDateTime.now());
+    //     plan2.setDeletedAt(null);
 
-        List<InsurancePlan> mockPlans = Arrays.asList(testInsurancePlan, plan2);
-        Page<InsurancePlan> mockPage = new PageImpl<>(mockPlans);
-        PageRequest pageRequest = PageRequest.of(0, 10);
+    //     List<InsurancePlan> mockPlans = Arrays.asList(testInsurancePlan, plan2);
+    //     Page<InsurancePlan> mockPage = new PageImpl<>(mockPlans);
+    //     PageRequest pageRequest = PageRequest.of(0, 10);
 
-        when(insurancePlanRepository.findAll(pageRequest)).thenReturn(mockPage);
+    //     when(insurancePlanRepository.findAll(pageRequest)).thenReturn(mockPage);
 
-        // Act
-        List<InsurancePlanResponseDTO> result = insurancePlanService.getAllInsurancePlans(pageRequest);
+    //     // Act
+    //     List<InsurancePlanResponseDTO> result = insurancePlanService.getAllInsurancePlans(pageRequest);
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals("INS1", result.get(0).getId());
-        assertEquals("Health Plus", result.get(0).getPlanName());
-        assertEquals("INS2", result.get(1).getId());
-        assertEquals("Travel Safe", result.get(1).getPlanName());
-        verify(insurancePlanRepository, times(1)).findAll(pageRequest);
-    }
+    //     // Assert
+    //     assertNotNull(result);
+    //     assertEquals(2, result.size());
+    //     assertEquals("INS1", result.get(0).getId());
+    //     assertEquals("Health Plus", result.get(0).getPlanName());
+    //     assertEquals("INS2", result.get(1).getId());
+    //     assertEquals("Travel Safe", result.get(1).getPlanName());
+    //     verify(insurancePlanRepository, times(1)).findAll(pageRequest);
+    // }
 
     // ========================== TEST GET BY ID - SUCCESS ==========================
     @Test

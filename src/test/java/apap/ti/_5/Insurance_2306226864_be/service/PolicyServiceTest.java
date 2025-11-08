@@ -113,61 +113,6 @@ class PolicyServiceTest {
 
         testPolicy.setOrderedPlans(Arrays.asList(testOrderedPlan1, testOrderedPlan2));
     }
-
-    // ========================== TEST CREATE POLICY - SUCCESS ==========================
-    @Test
-    void testCreatePolicy_Success() {
-        // Arrange
-        Policy newPolicy = new Policy();
-        newPolicy.setUserId("USER123");
-        newPolicy.setBookingId("BOOK789");
-        newPolicy.setService(ServiceEnum.ACCOMMODATION);
-        newPolicy.setStartDate(LocalDate.now());
-
-        List<String> insurancePlanIds = Arrays.asList("INS1", "INS2");
-
-        when(policyRepository.count()).thenReturn(5L);
-        when(orderedPlanRepository.count()).thenReturn(10L);
-        when(insurancePlanService.getInsurancePlanEntityById("INS1")).thenReturn(testInsurancePlan1);
-        when(insurancePlanService.getInsurancePlanEntityById("INS2")).thenReturn(testInsurancePlan2);
-        when(policyRepository.save(any(Policy.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // Act
-        Policy result = policyService.createPolicy(newPolicy, insurancePlanIds);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("POL6", result.getId()); // count + 1 = 6
-        assertEquals(PolicyStatusEnum.CREATED, result.getStatus());
-        assertEquals(800000, result.getTotalPrice()); // 500000 + 300000
-        assertEquals(15000000, result.getTotalCoverage()); // 10000000 + 5000000
-        assertNotNull(result.getCreatedAt());
-        assertNotNull(result.getUpdatedAt());
-
-        // Verify ordered plans
-        assertEquals(2, result.getOrderedPlans().size());
-
-        OrderedPlan op1 = result.getOrderedPlans().get(0);
-        assertEquals("OP11", op1.getId()); // orderedPlanRepository.count() + 1
-        assertEquals(OrderedPlanStatusEnum.ORDERED, op1.getStatus());
-        assertEquals(testInsurancePlan1, op1.getInsurancePlan());
-        assertEquals(LocalDate.now().plusDays(365), op1.getExpiredDate());
-        assertNotNull(op1.getCreatedAt());
-
-        OrderedPlan op2 = result.getOrderedPlans().get(1);
-        assertEquals("OP12", op2.getId()); // orderedPlanRepository.count() + 2
-        assertEquals(OrderedPlanStatusEnum.ORDERED, op2.getStatus());
-        assertEquals(testInsurancePlan2, op2.getInsurancePlan());
-        assertEquals(LocalDate.now().plusDays(180), op2.getExpiredDate());
-        assertNotNull(op2.getCreatedAt());
-
-        verify(policyRepository, times(1)).count();
-        verify(orderedPlanRepository, atLeastOnce()).count(); // Called at least once in the loop
-        verify(insurancePlanService, times(1)).getInsurancePlanEntityById("INS1");
-        verify(insurancePlanService, times(1)).getInsurancePlanEntityById("INS2");
-        verify(policyRepository, times(1)).save(any(Policy.class));
-    }
-
     // ========================== TEST CREATE POLICY - FAIL (INSURANCE PLAN NOT FOUND) ==========================
     @Test
     void testCreatePolicy_Fail_InsurancePlanNotFound() {

@@ -1,15 +1,15 @@
 package apap.ti._5.Insurance_2306226864_be.repository;
 
-import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
-import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import apap.ti._5.Insurance_2306226864_be.enums.OrderedPlanStatusEnum;
+import apap.ti._5.Insurance_2306226864_be.model.OrderedPlan;
 
 @Repository
 public interface OrderedPlanRepository extends JpaRepository<OrderedPlan, String> {
@@ -19,7 +19,9 @@ public interface OrderedPlanRepository extends JpaRepository<OrderedPlan, String
     List<OrderedPlan> findByInsurancePlan_Id(String insurancePlanId);
     List<OrderedPlan> findByExpiredDateBefore(LocalDate currentDate);
     List<OrderedPlan> findByExpiredDateBetween(LocalDate startDate, LocalDate endDate);
-    
+    long countByPolicyId(String policyId);
+
+
     /**
      * Find active OrderedPlans by InsurancePlan ID (not expired and not in EXPIRED/REJECTED status)
      * @param insurancePlanId The insurance plan ID

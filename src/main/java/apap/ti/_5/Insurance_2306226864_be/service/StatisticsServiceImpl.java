@@ -59,11 +59,16 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
         }
         
-        // Group by insurance plan name and count
+        // Group by month (YYYY-MM format) and count
         Map<String, Long> statistics = orderedPlans.stream()
-                .filter(op -> op.getInsurancePlan() != null)
+                .filter(op -> op.getCreatedAt() != null)
                 .collect(Collectors.groupingBy(
-                    op -> op.getInsurancePlan().getPlanName(),
+                    op -> {
+                        LocalDateTime createdAt = op.getCreatedAt();
+                        return String.format("%04d-%02d", 
+                            createdAt.getYear(), 
+                            createdAt.getMonthValue());
+                    },
                     Collectors.counting()
                 ));
         

@@ -36,21 +36,6 @@ public class OrderedPlanServiceImpl implements OrderedPlanService {
         return orderedPlanRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrderedPlan with ID " + id + " not found"));
     }
-
-    // ========================== CREATE ==========================
-    @Override
-    public OrderedPlan createOrderedPlan(String policyId, OrderedPlan orderedPlan) {
-        // Generate ID: OP + (count + 1)
-        long count = orderedPlanRepository.count();
-        orderedPlan.setId(policyId + "-OP" + (count + 1));
-
-        // Set timestamps
-        orderedPlan.setCreatedAt(LocalDateTime.now());
-        orderedPlan.setUpdatedAt(LocalDateTime.now());
-
-        return orderedPlanRepository.save(orderedPlan);
-    }
-
     // ========================== UPDATE STATUS ==========================
     @Override
     public OrderedPlan updateOrderedPlanStatus(String id, String status) {
