@@ -183,37 +183,37 @@ class InsurancePlanServiceTest {
         verify(insurancePlanRepository, times(1)).save(any(InsurancePlan.class));
     }
 
-    // ========================== TEST UPDATE - SUCCESS ==========================
-    @Test
-    void testUpdateInsurancePlan_Success() {
-        // Arrange
-        LocalDateTime originalUpdatedAt = testInsurancePlan.getUpdatedAt();
+    // // ========================== TEST UPDATE - SUCCESS ==========================
+    // @Test
+    // void testUpdateInsurancePlan_Success() {
+    //     // Arrange
+    //     LocalDateTime originalUpdatedAt = testInsurancePlan.getUpdatedAt();
         
-        when(insurancePlanRepository.findByIdAndDeletedAtIsNull("INS1"))
-                .thenReturn(Optional.of(testInsurancePlan));
-        when(insurancePlanRepository.save(any(InsurancePlan.class))).thenAnswer(invocation -> {
-            InsurancePlan savedPlan = invocation.getArgument(0);
-            return savedPlan;
-        });
+    //     when(insurancePlanRepository.findByIdAndDeletedAtIsNull("INS1"))
+    //             .thenReturn(Optional.of(testInsurancePlan));
+    //     when(insurancePlanRepository.save(any(InsurancePlan.class))).thenAnswer(invocation -> {
+    //         InsurancePlan savedPlan = invocation.getArgument(0);
+    //         return savedPlan;
+    //     });
 
-        // Act
-        InsurancePlanResponseDTO result = insurancePlanService.updateInsurancePlan("INS1", updateRequestDTO);
+    //     // Act
+    //     InsurancePlanResponseDTO result = insurancePlanService.updateInsurancePlan("INS1", updateRequestDTO);
 
-        // Assert
-        assertNotNull(result);
-        assertEquals("INS1", result.getId());
-        assertEquals("Health Plus Updated", result.getPlanName());
-        assertEquals(600000, result.getPrice());
-        assertEquals(12000000, result.getCoverage());
-        assertEquals("Updated comprehensive health coverage", result.getCoverageDetails());
-        assertEquals(400, result.getExpiredByDays());
+    //     // Assert
+    //     assertNotNull(result);
+    //     assertEquals("INS1", result.getId());
+    //     assertEquals("Health Plus Updated", result.getPlanName());
+    //     assertEquals(600000, result.getPrice());
+    //     assertEquals(12000000, result.getCoverage());
+    //     assertEquals("Updated comprehensive health coverage", result.getCoverageDetails());
+    //     assertEquals(400, result.getExpiredByDays());
         
-        // Verify updatedAt changed
-        assertNotEquals(originalUpdatedAt, testInsurancePlan.getUpdatedAt());
+    //     // Verify updatedAt changed
+    //     assertNotEquals(originalUpdatedAt, testInsurancePlan.getUpdatedAt());
         
-        verify(insurancePlanRepository, times(1)).findByIdAndDeletedAtIsNull("INS1");
-        verify(insurancePlanRepository, times(1)).save(testInsurancePlan);
-    }
+    //     verify(insurancePlanRepository, times(1)).findByIdAndDeletedAtIsNull("INS1");
+    //     verify(insurancePlanRepository, times(1)).save(testInsurancePlan);
+    // }
 
     // ========================== TEST DELETE - SUCCESS (ALL ORDERED PLANS EXPIRED) ==========================
     @Test

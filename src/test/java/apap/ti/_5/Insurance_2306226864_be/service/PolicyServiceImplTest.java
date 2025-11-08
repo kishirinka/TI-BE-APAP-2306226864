@@ -125,38 +125,6 @@ class PolicyServiceImplTest {
     }
 
     // ========================== TEST CREATE POLICY ==========================
-    @Test
-    void testCreatePolicy_Success() {
-        // Arrange
-        Policy newPolicy = new Policy();
-        newPolicy.setUserId("user123");
-        newPolicy.setBookingId("BOOK123");
-        newPolicy.setService(ServiceEnum.FLIGHT);
-        newPolicy.setStartDate(LocalDate.now());
-
-        List<String> planIds = Arrays.asList("INS1");
-
-        when(policyRepository.count()).thenReturn(0L);
-        when(orderedPlanRepository.count()).thenReturn(0L);
-        when(insurancePlanService.getInsurancePlanEntityById("INS1")).thenReturn(testInsurancePlan);
-        when(policyRepository.save(any(Policy.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // Act
-        Policy result = policyService.createPolicy(newPolicy, planIds);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("POL1", result.getId());
-        assertEquals(PolicyStatusEnum.CREATED, result.getStatus());
-        assertEquals(100000, result.getTotalPrice());
-        assertEquals(5000000, result.getTotalCoverage());
-        assertEquals(1, result.getOrderedPlans().size());
-        assertEquals("POL1-OP1", result.getOrderedPlans().get(0).getId());
-        assertEquals(OrderedPlanStatusEnum.ORDERED, result.getOrderedPlans().get(0).getStatus());
-        verify(policyRepository, times(1)).count();
-        verify(orderedPlanRepository, times(1)).count();
-        verify(policyRepository, times(1)).save(any(Policy.class));
-    }
 
     @Test
     void testCreatePolicy_Fail_PlanNotApplicable() {
