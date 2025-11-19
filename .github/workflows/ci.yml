@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - development
+      - feat/tutorial-9
 
 env:
   DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
