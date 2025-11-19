@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: springboot-container
-          image: niaalw28/insurance-2306226864:REPLACE_ME_TAG
+          image: niaalw28/insurance-2306226864
           ports:
             - containerPort: 8080
           env:
