@@ -40,9 +40,9 @@ jobs:
           path: |
             app.jar
             Dockerfile
-            deployment.yaml
-            service.yaml
-            ingress.yaml
+            k8s/deployment.yaml
+            k8s/service.yaml
+            k8s/ingress.yaml
           retention-days: 1
 
   docker-push:
