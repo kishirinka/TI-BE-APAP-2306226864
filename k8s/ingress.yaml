@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: insurance-2306226864-ingress
+  name: insurance-be-ingress
   namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: insurance-2306226864-service
+                name: insurance-be-service
                 port:
                   number: 80

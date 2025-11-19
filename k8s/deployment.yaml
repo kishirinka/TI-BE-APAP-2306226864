@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: insurance-2306226864
+  name: insurance-be
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: insurance-2306226864
+      app: insurance-be
   template:
     metadata:
       labels:
-        app: insurance-2306226864
+        app: insurance-be
     spec:
       containers:
         - name: springboot-container
@@ -22,20 +22,20 @@ spec:
             - name: DATABASE_URL_PROD
               valueFrom:
                 configMapKeyRef:
-                  name: insurance-2306226864-config
+                  name: insurance-be-config
                   key: DATABASE_URL_PROD
             - name: DATABASE_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: insurance-2306226864-config
+                  name: insurance-be-config
                   key: DATABASE_USERNAME
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: insurance-2306226864-secret
+                  name: insurance-be-secret
                   key: DATABASE_PASSWORD
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: insurance-2306226864-secret
+                  name: insurance-be-secret
                   key: JWT_SECRET_KEY
